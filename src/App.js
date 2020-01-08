@@ -23,7 +23,7 @@ function App() {
 
   return (
     <div className="App">
-      <Photo title={photo.title} scr={photo.url} description={photo.explanation}/>
+      <Photo title={photo.title} scr={photo.url} description={photo.explanation} date={photo.date}/>
     </div>
   );
 }
