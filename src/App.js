@@ -30,7 +30,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`https://api.nasa.gov/planetary/apod?api_key=5OEsUVedFGlY1ldUSWVhkLq3hXv1rda1APz6bfRT&date=${day}`)
+      .get(`https://api.nasa.gov/planetary/apod?api_key=5OEsUVedFGlY1ldUSWVhkLq3hXv1rda1APz6bfRT`)
       .then((res) => {
         console.log(res);
         setPhoto(res.data);
@@ -42,11 +42,34 @@ function App() {
   }, []);
 
   console.log(photo);
+  
+  const onChangeHandler = e => {
+    e.preventDefault();
+    setDay(e.target.value);
+    e.persist();
+  }
+
+  function getDay(e) {
+    let date = day;
+    e.preventDefault();
+    
+    axios.get(`https://api.nasa.gov/planetary/apod?api_key=5OEsUVedFGlY1ldUSWVhkLq3hXv1rda1APz6bfRT&date=${date}`)
+      .then((res) => {
+        setPhoto(res.data);
+      })
+
+      .catch((err) => {
+        console.log(err);
+      })
+  }
 
   return (
     <div className="App">
       <P>Choose the day!</P>
-      <Input placeholder={"yyyy-mm-dd"} onChange={(e) => setDay(e.target.value)}></Input>
+      <form>
+        <Input onChange={(e) => onChangeHandler(e)}  value={day} className="input-date" type="text" placeholder={"yyyy-mm-dd"}></Input>
+        <button onClick={(e) => getDay(e)} type="submit">Submit</button>
+      </form>
       <Photo title={photo.title} scr={photo.url} description={photo.explanation} date={photo.date}/>
     </div>
   );
